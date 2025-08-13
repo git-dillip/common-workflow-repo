@@ -23,11 +23,18 @@ jobs:
         with: ${{secrets.GH_PAT}}
 
       - name: Setup Java with Version ${{vars.JAVA_VERSION}}
-        uses: actions/ssetup-java@v2
+        uses: actions/setup-java@v4
         with:
           distribution: ${{vars.JAVA_DISTRIBUTION}}
           java-version: ${{vars.JAVA_VERSION}}
           cache: maven
+      - name: Build Maven Project
+        run: |
+          mvn clean install \
+          -Dquarkus.profile=${{ inputs.ENV_NAME }} \
+          -Dmaven.test.failure.ignore=${{ vars.MAVEN_TEST_FAILURE_IGNORE }} \
+          -DskipTests=${{ vars.BUILD_SKIP_TEST_FLAG }}
+          
 
 
 
