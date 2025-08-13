@@ -6,3 +6,6 @@ on:
       ENV_NAME:
         required: true
         type: string
+jobs:
+  sonarqube_scans:
+    runs-on: 'abc'
