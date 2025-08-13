@@ -1,0 +1,35 @@
+#Build and deploye API Application  to respective enviornment based on selection
+#Step-1 :- To Setup JAVA  and Maven
+#
+
+name: Build-Deploye-Application
+on:
+  workflow_call:
+    inputs:
+      ENV_NAME:
+        required: true
+        type: string
+
+env:
+
+jobs:
+  Build-Deploye-Application:
+    runs-on: ${{vars.ACT_GITHUB_RUNNER}}
+    environment: ${{input.ENV_NAME}}
+
+    steps:
+      - name: Checkout Project ${{github.event.repository.name}} , Branch - ${{github.ref_name}}
+        uses: actions/checkout@v4
+        with: ${{secrets.GH_PAT}}
+
+      - name: Setup Java with Version ${{vars.JAVA_VERSION}}
+        uses: actions/ssetup-java@v2
+        with:
+          distribution: ${{vars.JAVA_DISTRIBUTION}}
+          java-version: ${{vars.JAVA_VERSION}}
+          cache: maven
+
+
+
+
+
