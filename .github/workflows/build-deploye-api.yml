@@ -11,11 +11,13 @@ on:
         type: string
 
 env:
+  ENV: ${{ inputs.ENV_NAME }}
+
 
 jobs:
   Build-Deploye-Application:
     runs-on: ${{vars.ACT_GITHUB_RUNNER}}
-    environment: ${{input.ENV_NAME}}
+    environment: ${{ inputs.ENV_NAME }}
 
     steps:
       - name: Checkout Project ${{github.event.repository.name}} , Branch - ${{github.ref_name}}
