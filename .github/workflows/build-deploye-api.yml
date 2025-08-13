@@ -22,7 +22,8 @@ jobs:
     steps:
       - name: Checkout Project ${{github.event.repository.name}} , Branch - ${{github.ref_name}}
         uses: actions/checkout@v4
-        with: ${{secrets.GH_PAT}}
+        with:
+          token: ${{secrets.GH_PAT}}
 
       - name: Setup Java with Version ${{vars.JAVA_VERSION}}
         uses: actions/setup-java@v4
