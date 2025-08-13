@@ -1,0 +1,8 @@
+name: SONAR-SCAN
+
+on:
+  workflow_call:
+    inputs:
+      ENV_NAME:
+        required: true
+        type: string

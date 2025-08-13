@@ -1,0 +1,8 @@
+name: FORTIFY-SCAN
+
+on:
+  workflow_call:
+    inputs:
+      ENV_NAME:
+        required: true
+        type: string
