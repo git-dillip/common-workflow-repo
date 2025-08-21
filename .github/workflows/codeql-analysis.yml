@@ -1,0 +1,33 @@
+name: CODEQL-ANALYSIS
+
+on:
+  workflow_call:
+    inputs:
+      ENV_NAME:
+        required: true
+        type: string
+jobs:
+  codeql_analysis:
+    runs-on: ${{vars.ACT_GITHUB_RUNNER}}
+    environment: ${{ inputs.ENV_NAME }}
+    env:
+      CODEQl: ${{ vars.CODEQL }}
+      ENVY: ${{ inputs.ENV_NAME }}
+
+    steps:
+      - name: Checkout Project ${{github.event.repository.name}} , Branch - ${{github.ref_name}}
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        if: ${{ env.CODEQL =='true' &&  env.ENVY == 'dev' }}
+        uses: github/codeql-action/init@V3
+
+        with:
+          languages: java
+
+      - name: Perform CodeQL Analysis
+        if: ${{ env.CODEQL =='true' &&  env.ENVY == 'dev' }}
+        uses: github/codeql-action/analyze@V3
+
+
+
