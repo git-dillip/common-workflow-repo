@@ -11,7 +11,7 @@ jobs:
     runs-on: ${{vars.ACT_GITHUB_RUNNER}}
     environment: ${{ inputs.ENV_NAME }}
     env:
-      CODEQl: ${{ vars.CODEQL }}
+      CODEQL: ${{ vars.CODEQL }}
       ENVY: ${{ inputs.ENV_NAME }}
 
     steps:
