@@ -53,6 +53,7 @@ jobs:
         uses: github/codeql-action/init@v3
         with:
           languages: java
+          build-mode: none
 
       - name: CodeQL Initialization Status
         run: |
