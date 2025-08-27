@@ -20,14 +20,14 @@ jobs:
 
       - name: Initialize CodeQL
         if: ${{ env.CODEQL =='true' &&  env.ENVY == 'dev' }}
-        uses: github/codeql-action/init@V3
+        uses: github/codeql-action/init@v3
 
         with:
           languages: java
 
       - name: Perform CodeQL Analysis
         if: ${{ env.CODEQL =='true' &&  env.ENVY == 'dev' }}
-        uses: github/codeql-action/analyze@V3
+        uses: github/codeql-action/analyze@v3
 
 
 
