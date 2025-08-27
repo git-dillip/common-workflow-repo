@@ -1,0 +1,75 @@
+name: CODEQL-ANALYSIS
+
+on:
+  workflow_call:
+    inputs:
+      ENV_NAME:
+        required: true
+        type: string
+jobs:
+  codeql_analysis:
+    runs-on: ${{vars.ACT_GITHUB_RUNNER}}
+    environment: ${{ inputs.ENV_NAME }}
+    env:
+      CODEQL: ${{ vars.CODEQL }}  # Fixed typo: was "CODEQl"
+      ENVY: ${{ inputs.ENV_NAME }}
+
+    steps:
+      - name: Checkout Project ${{github.event.repository.name}} , Branch - ${{github.ref_name}}
+        uses: actions/checkout@v4
+
+      - name: Debug Environment Variables
+        run: |
+          echo "🔍 Debugging Environment Variables:"
+          echo "CODEQL value: '${{ env.CODEQL }}'"
+          echo "ENVY value: '${{ env.ENVY }}'"
+          echo "vars.CODEQL: '${{ vars.CODEQL }}'"
+          echo "inputs.ENV_NAME: '${{ inputs.ENV_NAME }}'"
+          echo "Environment from context: '${{ github.environment }}'"
+
+      - name: Check Condition Logic
+        run: |
+          echo "🧪 Testing Conditions:"
+          if [ "${{ env.CODEQL }}" = "true" ]; then
+            echo "✅ CODEQL condition is TRUE"
+          else
+            echo "❌ CODEQL condition is FALSE (value: '${{ env.CODEQL }}')"
+          fi
+          
+          if [ "${{ env.ENVY }}" = "dev" ]; then
+            echo "✅ ENVY condition is TRUE"
+          else
+            echo "❌ ENVY condition is FALSE (value: '${{ env.ENVY }}')"
+          fi
+          
+          if [ "${{ env.CODEQL }}" = "true" ] && [ "${{ env.ENVY }}" = "dev" ]; then
+            echo "✅ Both conditions are TRUE - CodeQL should run"
+          else
+            echo "❌ Combined condition is FALSE - CodeQL will NOT run"
+          fi
+
+      - name: Initialize CodeQL
+        if: ${{ env.CODEQL == 'true' && env.ENVY == 'dev' }}
+        uses: github/codeql-action/init@v3
+        with:
+          languages: java
+
+      - name: CodeQL Initialization Status
+        run: |
+          if [ "${{ env.CODEQL }}" = "true" ] && [ "${{ env.ENVY }}" = "dev" ]; then
+            echo "✅ CodeQL initialization should have completed"
+          else
+            echo "⏭️ CodeQL initialization was skipped due to conditions"
+          fi
+
+      - name: Perform CodeQL Analysis
+        if: ${{ env.CODEQL == 'true' && env.ENVY == 'dev' }}
+        uses: github/codeql-action/analyze@v3
+
+      - name: Analysis Complete Status
+        run: |
+          if [ "${{ env.CODEQL }}" = "true" ] && [ "${{ env.ENVY }}" = "dev" ]; then
+            echo "🎯 CodeQL analysis should have completed"
+          else
+            echo "⏭️ CodeQL analysis was skipped due to conditions"
+          fi
